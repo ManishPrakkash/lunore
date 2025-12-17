@@ -1,0 +1,41 @@
+.rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.star {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.star-full {
+  color: #fbbf24;
+}
+
+.star-half {
+  color: #fbbf24;
+  position: relative;
+}
+
+.star-half::after {
+  content: '★';
+  position: absolute;
+  left: 0;
+  color: #d1d5db;
+  clip-path: inset(0 50% 0 0);
+}
+
+.star-empty {
+  color: #d1d5db;
+}
+
+.rating-value {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
