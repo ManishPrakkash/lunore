@@ -25,9 +25,11 @@ const PORT = process.env.PORT || 5000;
 // ─────────────────────────────────────────────
 
 // CORS – allow frontend to access backend
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? [process.env.CORS_ORIGIN]
-  : true; // allow all in development
+const allowedOrigins = process.env.CORS_ORIGIN === "*"
+  ? true
+  : process.env.CORS_ORIGIN
+    ? [process.env.CORS_ORIGIN]
+    : true; // allow all in development
 
 app.use(
   cors({

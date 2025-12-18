@@ -1,5 +1,5 @@
-# Render Blueprint for Lunoré E-Commerce Platform
-# This file defines the infrastructure for deploying both frontend and backend services
+# Render Blueprint for Lunoré Backend API
+# Backend-only deployment configuration
 
 services:
   # ============================================
@@ -21,68 +21,21 @@ services:
         value: production
       
       - key: PORT
-        value: 5000
+        value: 10000
       
-      # MongoDB Connection String (REQUIRED - Add in Render Dashboard)
+      # MongoDB Connection String (Add in Render Dashboard)
       - key: MONGODB_URI
         sync: false
       
-      # JWT Secret (REQUIRED - Add in Render Dashboard)
+      # JWT Secret (Add in Render Dashboard)
       - key: JWT_SECRET
         sync: false
       
-      # CORS Origin (Add manually after frontend is deployed)
+      # CORS Origin - Allow all origins or specify your frontend URL
       - key: CORS_ORIGIN
-        sync: false
+        value: "*"
 
-    # Auto-deploy settings
-    autoDeploy: true
-
-  # ============================================
-  # FRONTEND SERVICE (React/Vite Static Site)
-  # ============================================
-  - type: web
-    name: lunore-frontend
-    runtime: static
-    plan: free
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    
-    # Environment variables for frontend (Add backend URL manually after backend is deployed)
-    envVars:
-      - key: VITE_API_URL
-        sync: false
-    
-    # Custom headers for security and performance
-    headers:
-      - path: /*
-        name: X-Frame-Options
-        value: DENY
-      
-      - path: /*
-        name: X-Content-Type-Options
-        value: nosniff
-      
-      - path: /*
-        name: Referrer-Policy
-        value: strict-origin-when-cross-origin
-      
-      - path: /*
-        name: Permissions-Policy
-        value: geolocation=(), microphone=(), camera=()
-      
-      # Cache static assets
-      - path: /assets/*
-        name: Cache-Control
-        value: public, max-age=31536000, immutable
-    
-    # Routes configuration for React Router
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    
-    # Auto-deploy settings
+    # Auto-deploy on git push
     autoDeploy: true
 
 # ============================================
@@ -91,15 +44,7 @@ services:
 # 1. Push this file to your GitHub repository root
 # 2. Go to Render Dashboard → New → Blueprint
 # 3. Connect your GitHub repository
-# 4. After services are created, add these environment variables:
-#
-#    BACKEND (lunore-backend):
+# 4. Add these environment variables in Render Dashboard:
 #    - MONGODB_URI: mongodb+srv://user:pass@cluster.mongodb.net/lunore
 #    - JWT_SECRET: (generate with: openssl rand -base64 32)
-#    - CORS_ORIGIN: https://lunore-frontend.onrender.com (your frontend URL)
-#
-#    FRONTEND (lunore-frontend):
-#    - VITE_API_URL: https://lunore-backend.onrender.com (your backend URL)
-#
-# 5. Trigger manual redeploy of frontend after adding VITE_API_URL
-# 6. Done! Your app is live 🎉
+# 5. Your backend API will be live at: https://lunore-backend.onrender.com
