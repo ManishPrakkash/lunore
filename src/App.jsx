@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
 import { CartProvider } from './app/store/CartContext';
 import { WishlistProvider } from './app/store/WishlistContext';
 import { AuthProvider } from './contexts/AuthContext';
 import useSmoothScroll from './hooks/useSmoothScroll';
+import { startKeepAlive, stopKeepAlive } from './services/keepAlive';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import RootLayout from './components/layout/RootLayout';
 import Home from './pages/Home';
@@ -21,6 +23,12 @@ function App() {
     multiplier: 1,
     enabled: true
   });
+
+  // Start keep-alive service to prevent backend from sleeping
+  useEffect(() => {
+    startKeepAlive();
+    return () => stopKeepAlive();
+  }, []);
 
   return (
     <AuthProvider>
