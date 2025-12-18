@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { CartProvider } from './app/store/CartContext';
 import { WishlistProvider } from './app/store/WishlistContext';
 import { AuthProvider } from './contexts/AuthContext';
-import useSmoothScroll from './hooks/useSmoothScroll';
 import { startKeepAlive, stopKeepAlive } from './services/keepAlive';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import RootLayout from './components/layout/RootLayout';
@@ -18,11 +17,12 @@ import RegisterPage from './pages/RegisterPage';
 import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
-  useSmoothScroll({
-    smoothness: 0.12,
-    multiplier: 1,
-    enabled: true
-  });
+  // Disabled custom smooth scroll - using native CSS smooth scroll instead
+  // useSmoothScroll({
+  //   smoothness: 0.12,
+  //   multiplier: 1,
+  //   enabled: false
+  // });
 
   // Start keep-alive service to prevent backend from sleeping
   useEffect(() => {
