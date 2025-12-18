@@ -1,4 +1,4 @@
-# Lunoré - Luxury E-Commerce Platform
+# Lunoré - Luxury Fashion 
 
 A modern, full-stack e-commerce application built with React, Express, and MongoDB.
 
