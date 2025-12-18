@@ -18,6 +18,7 @@ export default function ProductDetailPage() {
     const [selectedColor, setSelectedColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [activeAccordion, setActiveAccordion] = useState('description');
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
 
     const { addToCart } = useCart();
     const { isInWishlist, toggleWishlist } = useWishlist();
@@ -72,6 +73,30 @@ export default function ProductDetailPage() {
         if (selectedColor) variant.color = selectedColor.name;
 
         addToCart(product, quantity, Object.keys(variant).length > 0 ? variant : null);
+
+        // Show "Added to Cart" feedback
+        setIsAddedToCart(true);
+        setTimeout(() => {
+            setIsAddedToCart(false);
+        }, 2000);
+    };
+
+    const handleQuantityChange = (e) => {
+        const newQuantity = parseInt(e.target.value, 10);
+        if (!isNaN(newQuantity) && newQuantity > 0 && newQuantity <= (product.stock || 999)) {
+            setQuantity(newQuantity);
+        } else if (e.target.value === '') {
+            // Allow empty field while typing
+            return;
+        }
+    };
+
+    const handleQuantityBlur = (e) => {
+        // If field is empty or invalid on blur, reset to 1
+        const newQuantity = parseInt(e.target.value, 10);
+        if (isNaN(newQuantity) || newQuantity < 1) {
+            setQuantity(1);
+        }
     };
 
     if (loading) {
@@ -240,17 +265,25 @@ export default function ProductDetailPage() {
                         {/* Quantity */}
                         <div className="mb-8">
                             <label className="block text-sm font-medium mb-3">Quantity</label>
-                            <div className="flex items-center border border-noir-300 rounded-md w-32">
+                            <div className="flex items-center border border-noir-300 rounded-md w-40 quantity-container">
                                 <button
                                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                    className="px-4 py-2 hover:bg-noir-100 transition-colors"
+                                    className="px-4 py-2 hover:bg-noir-100 transition-colors flex-shrink-0"
                                 >
                                     −
                                 </button>
-                                <span className="flex-1 text-center">{quantity}</span>
+                                <input
+                                    type="number"
+                                    value={quantity}
+                                    onChange={handleQuantityChange}
+                                    onBlur={handleQuantityBlur}
+                                    min="1"
+                                    max={product.stock || 999}
+                                    className="flex-1 text-center bg-transparent border-none outline-none"
+                                />
                                 <button
                                     onClick={() => setQuantity(Math.min(product.stock || 999, quantity + 1))}
-                                    className="px-4 py-2 hover:bg-noir-100 transition-colors"
+                                    className="px-4 py-2 hover:bg-noir-100 transition-colors flex-shrink-0"
                                 >
                                     +
                                 </button>
@@ -264,9 +297,9 @@ export default function ProductDetailPage() {
                                 size="lg"
                                 className="flex-1"
                                 onClick={handleAddToCart}
-                                disabled={product.stock === 0}
+                                disabled={product.stock === 0 || isAddedToCart}
                             >
-                                {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                                {product.stock === 0 ? 'Out of Stock' : isAddedToCart ? '✓ Added to Cart!' : 'Add to Cart'}
                             </Button>
                             <button
                                 onClick={() => toggleWishlist(product)}

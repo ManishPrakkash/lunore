@@ -44,11 +44,11 @@ export default function CartDrawer({ onClose }) {
                     <div className="space-y-4">
                         {cart.map((item) => (
                             <CartItem
-                                key={`${item.id}-${JSON.stringify(item.variant)}`}
+                                key={`${item._id}-${JSON.stringify(item.variant)}`}
                                 item={item}
-                                onRemove={() => removeFromCart(item.id, item.variant)}
+                                onRemove={() => removeFromCart(item._id, item.variant)}
                                 onUpdateQuantity={(qty) =>
-                                    updateQuantity(item.id, item.variant, qty)
+                                    updateQuantity(item._id, item.variant, qty)
                                 }
                             />
                         ))}
