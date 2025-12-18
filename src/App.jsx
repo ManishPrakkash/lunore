@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { CartProvider } from './app/store/CartContext';
 import { WishlistProvider } from './app/store/WishlistContext';
 import { AuthProvider } from './contexts/AuthContext';
+import useSmoothScroll from './hooks/useSmoothScroll';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import RootLayout from './components/layout/RootLayout';
 import Home from './pages/Home';
@@ -15,17 +16,40 @@ import RegisterPage from './pages/RegisterPage';
 import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
+  useSmoothScroll({
+    smoothness: 0.12,
+    multiplier: 1,
+    enabled: true
+  });
+
   return (
     <AuthProvider>
       <CartProvider>
         <WishlistProvider>
           <BrowserRouter>
             <Toaster
-              position="top-right"
+              position="bottom-center"
               reverseOrder={false}
               gutter={8}
+              containerStyle={{
+                bottom: 40,
+              }}
               toastOptions={{
                 duration: 3000,
+                className: '',
+                style: {
+                  animation: 'toastSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                },
+                success: {
+                  style: {
+                    animation: 'toastSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  },
+                },
+                error: {
+                  style: {
+                    animation: 'toastSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  },
+                },
               }}
             />
             <Routes>

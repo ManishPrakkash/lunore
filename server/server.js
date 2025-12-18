@@ -24,10 +24,14 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 // ─────────────────────────────────────────────
 
-// CORS – allow frontend to access backend (EC2 safe)
+// CORS – allow frontend to access backend
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? [process.env.CORS_ORIGIN]
+  : true; // allow all in development
+
 app.use(
   cors({
-    origin: true, // allow all origins for now
+    origin: allowedOrigins,
     credentials: true,
   })
 );

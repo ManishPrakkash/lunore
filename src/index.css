@@ -111,6 +111,30 @@
   }
 }
 
+@keyframes toastSlideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toastSlideDown {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -126,5 +150,32 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Hide number input spinners */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  /* Ensure quantity buttons don't overflow */
+  .quantity-container {
+    min-width: 140px;
+  }
+
+  /* Toast exit animation */
+  [data-sonner-toast][data-dismissing="true"] {
+    animation: toastSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
+  /* React Hot Toast exit animation */
+  div[role="status"][data-visible="false"] {
+    animation: toastSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
   }
 }
